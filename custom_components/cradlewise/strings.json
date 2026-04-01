@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Connect to Cradlewise",
-        "description": "Enter your Cradlewise account credentials (same email and password you use in the Cradlewise app).",
+        "description": "Enter your Cradlewise account credentials (same email and password you use in the Cradlewise app).\n\n**Initial setup may take several minutes** while configuration is downloaded. Please be patient.",
         "data": {
           "email": "Email",
           "password": "Password"
