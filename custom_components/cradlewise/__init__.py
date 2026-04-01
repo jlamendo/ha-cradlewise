@@ -40,7 +40,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: CradlewiseConfigEntry) -
         return False
 
     client = CradlewiseClient(auth)
-    coordinator = CradlewiseCoordinator(hass, client)
+    coordinator = CradlewiseCoordinator(hass, client, app_config)
     await coordinator.async_config_entry_first_refresh()
 
     entry.runtime_data = coordinator

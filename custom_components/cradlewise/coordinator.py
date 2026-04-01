@@ -7,6 +7,7 @@ from datetime import timedelta
 from typing import Any
 
 from pycradlewise import (
+    AppConfig,
     CradlewiseApiError,
     CradlewiseClient,
     CradlewiseCradle,
@@ -25,7 +26,9 @@ _LOGGER = logging.getLogger(__name__)
 class CradlewiseCoordinator(DataUpdateCoordinator[dict[str, CradlewiseCradle]]):
     """Coordinator to manage fetching Cradlewise data."""
 
-    def __init__(self, hass: HomeAssistant, client: CradlewiseClient) -> None:
+    def __init__(
+        self, hass: HomeAssistant, client: CradlewiseClient, app_config: AppConfig
+    ) -> None:
         super().__init__(
             hass,
             _LOGGER,
@@ -33,6 +36,7 @@ class CradlewiseCoordinator(DataUpdateCoordinator[dict[str, CradlewiseCradle]]):
             update_interval=timedelta(seconds=DEFAULT_SCAN_INTERVAL),
         )
         self.client = client
+        self._app_config = app_config
         self.cradles: dict[str, CradlewiseCradle] = {}
         self.analytics: dict[str, SleepAnalytics] = {}
         self._mqtt = CradlewiseMqtt()
@@ -63,6 +67,7 @@ class CradlewiseCoordinator(DataUpdateCoordinator[dict[str, CradlewiseCradle]]):
                 session_token=creds.session_token,
                 cradle_ids=list(self.cradles.keys()),
                 on_state_update=self._on_mqtt_state_update,
+                iot_endpoint=self._app_config.iot_endpoint,
             )
             self._mqtt_started = True
 
@@ -98,6 +103,7 @@ class CradlewiseCoordinator(DataUpdateCoordinator[dict[str, CradlewiseCradle]]):
                     session_token=creds.session_token,
                     cradle_ids=list(self.cradles.keys()),
                     on_state_update=self._on_mqtt_state_update,
+                    iot_endpoint=self._app_config.iot_endpoint,
                 )
 
         for cradle in self.cradles.values():
