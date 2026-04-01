@@ -7,6 +7,6 @@
   "documentation": "https://github.com/custom-components/cradlewise",
   "iot_class": "cloud_push",
   "issue_tracker": "https://github.com/custom-components/cradlewise/issues",
-  "requirements": ["pycradlewise==0.3.0"],
-  "version": "0.3.0"
+  "requirements": ["pycradlewise==0.3.1"],
+  "version": "0.3.1"
 }
