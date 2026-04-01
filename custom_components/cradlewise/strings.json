@@ -1,0 +1,63 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Cradlewise",
+        "description": "Enter your Cradlewise account credentials (same email and password you use in the Cradlewise app).",
+        "data": {
+          "email": "Email",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid email or password.",
+      "cannot_connect": "Unable to connect to Cradlewise. Please try again later."
+    },
+    "abort": {
+      "already_configured": "This Cradlewise account is already configured."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "sleep_state": { "name": "Sleep state" },
+      "sleep_phase": { "name": "Sleep phase" },
+      "cradle_mode": { "name": "Cradle mode" },
+      "bounce_mode": { "name": "Bounce mode" },
+      "bounce_setting": { "name": "Bounce setting" },
+      "bounce_amplitude": { "name": "Bounce amplitude" },
+      "responsivity_setting": { "name": "Responsivity" },
+      "music_mood": { "name": "Music mood" },
+      "music_volume": { "name": "Music volume" },
+      "music_mode": { "name": "Music mode" },
+      "light_intensity": { "name": "Light intensity" },
+      "sleep_time": { "name": "Sleep time" },
+      "wake_up_time": { "name": "Wake-up time" },
+      "firmware_version": { "name": "Firmware version" },
+      "total_sleep_today": { "name": "Total sleep today" },
+      "total_awake_today": { "name": "Total awake today" },
+      "nap_count": { "name": "Nap count" },
+      "longest_nap": { "name": "Longest nap" },
+      "soothe_count": { "name": "Soothe count" },
+      "last_nap_start": { "name": "Last nap started" },
+      "last_nap_end": { "name": "Last nap ended" },
+      "last_event": { "name": "Last sleep event" }
+    },
+    "binary_sensor": {
+      "online": { "name": "Online" },
+      "baby_present": { "name": "Baby present" },
+      "baby_needs_attention": { "name": "Baby needs attention" },
+      "baby_needs_help": { "name": "Baby needs help" },
+      "crib_helping": { "name": "Crib soothing" },
+      "bouncing": { "name": "Bouncing" },
+      "music_playing": { "name": "Music playing" },
+      "light_on": { "name": "Night light" },
+      "loud_sound_detected": { "name": "Loud sound detected" },
+      "inside_sleep_schedule": { "name": "In sleep schedule" },
+      "inside_soothing_window": { "name": "In soothing window" },
+      "rocking_not_effective": { "name": "Rocking not effective" },
+      "charging": { "name": "Charging" },
+      "power_supply_removed": { "name": "Power connected" }
+    }
+  }
+}
