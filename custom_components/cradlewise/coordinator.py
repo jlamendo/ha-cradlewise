@@ -115,9 +115,8 @@ class CradlewiseCoordinator(DataUpdateCoordinator[dict[str, CradlewiseCradle]]):
         for cradle in self.cradles.values():
             if cradle.baby_id:
                 try:
-                    self.analytics[cradle.baby_id] = (
-                        await self.client.fetch_sleep_analytics(cradle)
-                    )
+                    cradle.analytics = await self.client.fetch_sleep_analytics(cradle)
+                    self.analytics[cradle.baby_id] = cradle.analytics
                 except Exception as err:
                     _LOGGER.debug("Analytics fetch failed for %s: %s", cradle.baby_id, err)
 

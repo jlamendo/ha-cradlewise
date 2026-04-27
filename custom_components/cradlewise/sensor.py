@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any
 
 from pycradlewise import CradlewiseCradle, SleepAnalytics
@@ -71,10 +72,22 @@ SENSOR_DESCRIPTIONS: tuple[CradlewiseSensorEntityDescription, ...] = (
         value_fn=lambda c: c.bounce_amplitude,
     ),
     CradlewiseSensorEntityDescription(
+        key="max_bounce_limit",
+        translation_key="max_bounce_limit",
+        icon="mdi:arrow-up-down-bold-outline",
+        value_fn=lambda c: c.max_bounce_limit,
+    ),
+    CradlewiseSensorEntityDescription(
         key="responsivity_setting",
         translation_key="responsivity_setting",
         icon="mdi:speedometer",
-        value_fn=lambda c: c.responsivity_setting,
+        value_fn=lambda c: c.responsivity_level or c.responsivity_setting,
+    ),
+    CradlewiseSensorEntityDescription(
+        key="cry_sensitivity",
+        translation_key="cry_sensitivity",
+        icon="mdi:baby-face-outline",
+        value_fn=lambda c: c.cry_sensitivity_level or c.cry_sensitivity,
     ),
     CradlewiseSensorEntityDescription(
         key="music_mood",
@@ -89,10 +102,31 @@ SENSOR_DESCRIPTIONS: tuple[CradlewiseSensorEntityDescription, ...] = (
         value_fn=lambda c: c.music_volume,
     ),
     CradlewiseSensorEntityDescription(
+        key="max_volume_limit",
+        translation_key="max_volume_limit",
+        icon="mdi:volume-source",
+        value_fn=lambda c: c.max_volume_limit,
+    ),
+    CradlewiseSensorEntityDescription(
         key="music_mode",
         translation_key="music_mode",
         icon="mdi:playlist-music",
         value_fn=lambda c: c.music_mode,
+    ),
+    CradlewiseSensorEntityDescription(
+        key="music_track",
+        translation_key="music_track",
+        icon="mdi:music-box",
+        value_fn=lambda c: c.music_track,
+    ),
+    CradlewiseSensorEntityDescription(
+        key="temperature",
+        translation_key="temperature",
+        icon="mdi:thermometer",
+        device_class="temperature",
+        native_unit_of_measurement="\u00b0C",
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda c: c.temperature,
     ),
     CradlewiseSensorEntityDescription(
         key="light_intensity",
@@ -104,13 +138,15 @@ SENSOR_DESCRIPTIONS: tuple[CradlewiseSensorEntityDescription, ...] = (
         key="sleep_time",
         translation_key="sleep_time",
         icon="mdi:clock-outline",
-        value_fn=lambda c: c.sleep_time,
+        device_class="timestamp",
+        value_fn=lambda c: datetime.fromisoformat(c.sleep_time) if c.sleep_time else None,
     ),
     CradlewiseSensorEntityDescription(
         key="wake_up_time",
         translation_key="wake_up_time",
         icon="mdi:alarm",
-        value_fn=lambda c: c.wake_up_time,
+        device_class="timestamp",
+        value_fn=lambda c: datetime.fromisoformat(c.wake_up_time) if c.wake_up_time else None,
     ),
     CradlewiseSensorEntityDescription(
         key="firmware_version",
@@ -164,13 +200,15 @@ ANALYTICS_DESCRIPTIONS: tuple[CradlewiseAnalyticsEntityDescription, ...] = (
         key="last_nap_start",
         translation_key="last_nap_start",
         icon="mdi:clock-start",
-        value_fn=lambda a: a.last_nap_start,
+        device_class="timestamp",
+        value_fn=lambda a: datetime.fromisoformat(a.last_nap_start) if a.last_nap_start else None,
     ),
     CradlewiseAnalyticsEntityDescription(
         key="last_nap_end",
         translation_key="last_nap_end",
         icon="mdi:clock-end",
-        value_fn=lambda a: a.last_nap_end,
+        device_class="timestamp",
+        value_fn=lambda a: datetime.fromisoformat(a.last_nap_end) if a.last_nap_end else None,
     ),
     CradlewiseAnalyticsEntityDescription(
         key="last_event",
