@@ -15,6 +15,12 @@ Home Assistant integration for the [Cradlewise Smart Crib](https://www.cradlewis
 | Light on | Binary sensor | Nightlight active |
 | Soothe count | Sensor | Soothing interventions today |
 | Total sleep | Sensor | Total sleep time today |
+| Temperature | Sensor | Crib room temperature |
+| Music track | Sensor | Current sound machine track name |
+| Sleep time | Sensor | Timestamp when baby fell asleep |
+| Wake time | Sensor | Timestamp of last wake-up |
+| Bounce limit | Sensor | Max allowed rocking intensity |
+| Volume limit | Sensor | Max allowed volume level |
 
 Real-time updates via MQTT when available, with REST polling fallback.
 
