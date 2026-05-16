@@ -60,6 +60,12 @@ SENSOR_DESCRIPTIONS: tuple[CradlewiseSensorEntityDescription, ...] = (
         value_fn=lambda c: c.bounce_mode,
     ),
     CradlewiseSensorEntityDescription(
+        key="bounce_level",
+        translation_key="bounce_level",
+        icon="mdi:arrow-up-down-bold",
+        value_fn=lambda c: c.bounce_level,
+    ),
+    CradlewiseSensorEntityDescription(
         key="bounce_setting",
         translation_key="bounce_setting",
         icon="mdi:tune-variant",
@@ -100,6 +106,12 @@ SENSOR_DESCRIPTIONS: tuple[CradlewiseSensorEntityDescription, ...] = (
         translation_key="music_volume",
         icon="mdi:volume-medium",
         value_fn=lambda c: c.music_volume,
+    ),
+    CradlewiseSensorEntityDescription(
+        key="music_level",
+        translation_key="music_level",
+        icon="mdi:volume-high",
+        value_fn=lambda c: c.music_level,
     ),
     CradlewiseSensorEntityDescription(
         key="max_volume_limit",
