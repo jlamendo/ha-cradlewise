@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from pycradlewise import CradlewiseAuth, CradlewiseAuthError, CradlewiseClient, get_app_config
+from .pycradlewise import CradlewiseAuth, CradlewiseAuthError, CradlewiseClient, get_app_config
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant

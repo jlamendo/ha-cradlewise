@@ -7,7 +7,7 @@ from typing import Any
 
 import voluptuous as vol
 
-from pycradlewise import (
+from .pycradlewise import (
     CradlewiseAuth,
     CradlewiseAuthError,
     CradlewiseClient,

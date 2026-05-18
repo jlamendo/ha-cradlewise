@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Callable
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, time, timedelta, timezone
 from typing import Any
 
-from pycradlewise import CradlewiseCradle, SleepAnalytics
+from .pycradlewise import CradlewiseCradle, SleepAnalytics
 
+from homeassistant.components.recorder import get_instance, history
 from homeassistant.components.sensor import (
     SensorEntity,
     SensorEntityDescription,
@@ -16,12 +18,16 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import UnitOfTime
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
 from .coordinator import CradlewiseCoordinator
+
+from homeassistant.util import dt as dt_util
+
+_LOGGER = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -161,6 +167,12 @@ SENSOR_DESCRIPTIONS: tuple[CradlewiseSensorEntityDescription, ...] = (
         value_fn=lambda c: datetime.fromisoformat(c.wake_up_time) if c.wake_up_time else None,
     ),
     CradlewiseSensorEntityDescription(
+        key="day_start_time",
+        translation_key="day_start_time",
+        icon="mdi:calendar-clock",
+        value_fn=lambda c: c.day_start_time,
+    ),
+    CradlewiseSensorEntityDescription(
         key="firmware_version",
         translation_key="firmware_version",
         icon="mdi:chip",
@@ -171,42 +183,52 @@ SENSOR_DESCRIPTIONS: tuple[CradlewiseSensorEntityDescription, ...] = (
 
 ANALYTICS_DESCRIPTIONS: tuple[CradlewiseAnalyticsEntityDescription, ...] = (
     CradlewiseAnalyticsEntityDescription(
-        key="total_sleep_today",
-        translation_key="total_sleep_today",
-        icon="mdi:sleep",
-        native_unit_of_measurement=UnitOfTime.MINUTES,
-        state_class=SensorStateClass.MEASUREMENT,
-        value_fn=lambda a: a.total_sleep_minutes,
+        key="total_soothe_count",
+        translation_key="soothe_count",
+        icon="mdi:hand-heart",
+        value_fn=lambda a: a.total_soothe_count,
     ),
     CradlewiseAnalyticsEntityDescription(
-        key="total_awake_today",
-        translation_key="total_awake_today",
-        icon="mdi:eye",
-        native_unit_of_measurement=UnitOfTime.MINUTES,
-        state_class=SensorStateClass.MEASUREMENT,
-        value_fn=lambda a: a.total_awake_minutes,
+        key="sleep_saved",
+        translation_key="sleep_saved",
+        icon="mdi:sleep",
+        value_fn=lambda a: a.sleep_saved,
     ),
     CradlewiseAnalyticsEntityDescription(
         key="nap_count",
         translation_key="nap_count",
         icon="mdi:counter",
-        state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda a: a.nap_count,
     ),
     CradlewiseAnalyticsEntityDescription(
-        key="longest_nap",
-        translation_key="longest_nap",
-        icon="mdi:trophy",
-        native_unit_of_measurement=UnitOfTime.MINUTES,
-        state_class=SensorStateClass.MEASUREMENT,
-        value_fn=lambda a: a.longest_nap_minutes,
+        key="rise_time_analytics",
+        translation_key="rise_time",
+        icon="mdi:weather-sunset-up",
+        value_fn=lambda a: a.rise_time,
     ),
     CradlewiseAnalyticsEntityDescription(
-        key="soothe_count",
-        translation_key="soothe_count",
-        icon="mdi:hand-heart",
-        state_class=SensorStateClass.MEASUREMENT,
-        value_fn=lambda a: a.total_soothe_count,
+        key="bed_time",
+        translation_key="bed_time",
+        icon="mdi:weather-sunset-down",
+        value_fn=lambda a: a.bed_time,
+    ),
+    CradlewiseAnalyticsEntityDescription(
+        key="time_in_bed",
+        translation_key="time_in_bed",
+        icon="mdi:bed-clock",
+        value_fn=lambda a: a.time_in_bed,
+    ),
+    CradlewiseAnalyticsEntityDescription(
+        key="longest_stretch",
+        translation_key="longest_stretch",
+        icon="mdi:trophy",
+        value_fn=lambda a: a.longest_stretch,
+    ),
+    CradlewiseAnalyticsEntityDescription(
+        key="awake_in_bed",
+        translation_key="awake_in_bed",
+        icon="mdi:eye",
+        value_fn=lambda a: a.awake_in_bed,
     ),
     CradlewiseAnalyticsEntityDescription(
         key="last_nap_start",
@@ -325,3 +347,5 @@ class CradlewiseAnalyticsSensor(CoordinatorEntity[CradlewiseCoordinator], Sensor
     @property
     def available(self) -> bool:
         return self.coordinator.cradles.get(self._cradle_id) is not None and super().available
+
+
