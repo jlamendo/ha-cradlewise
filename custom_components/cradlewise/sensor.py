@@ -230,6 +230,61 @@ ANALYTICS_DESCRIPTIONS: tuple[CradlewiseAnalyticsEntityDescription, ...] = (
         icon="mdi:eye",
         value_fn=lambda a: a.awake_in_bed,
     ),
+    # Weekly Aggregates
+    CradlewiseAnalyticsEntityDescription(
+        key="weekly_avg_sleep",
+        translation_key="weekly_avg_sleep",
+        icon="mdi:sleep",
+        value_fn=lambda a: a.weekly_avg_sleep,
+    ),
+    CradlewiseAnalyticsEntityDescription(
+        key="weekly_avg_day_sleep",
+        translation_key="weekly_avg_day_sleep",
+        icon="mdi:weather-sunny",
+        value_fn=lambda a: a.weekly_avg_day_sleep,
+    ),
+    CradlewiseAnalyticsEntityDescription(
+        key="weekly_avg_night_sleep",
+        translation_key="weekly_avg_night_sleep",
+        icon="mdi:weather-night",
+        value_fn=lambda a: a.weekly_avg_night_sleep,
+    ),
+    CradlewiseAnalyticsEntityDescription(
+        key="weekly_avg_nap_duration",
+        translation_key="weekly_avg_nap_duration",
+        icon="mdi:clock-outline",
+        value_fn=lambda a: a.weekly_avg_nap_duration,
+    ),
+    CradlewiseAnalyticsEntityDescription(
+        key="weekly_avg_naps_per_day",
+        translation_key="weekly_avg_naps_per_day",
+        icon="mdi:counter",
+        value_fn=lambda a: f"{a.weekly_avg_naps_per_day:.1f}" if a.weekly_avg_naps_per_day is not None else None,
+    ),
+    CradlewiseAnalyticsEntityDescription(
+        key="weekly_avg_rise_time",
+        translation_key="weekly_avg_rise_time",
+        icon="mdi:weather-sunset-up",
+        value_fn=lambda a: a.weekly_avg_rise_time,
+    ),
+    CradlewiseAnalyticsEntityDescription(
+        key="weekly_avg_bed_time",
+        translation_key="weekly_avg_bed_time",
+        icon="mdi:weather-sunset-down",
+        value_fn=lambda a: a.weekly_avg_bed_time,
+    ),
+    CradlewiseAnalyticsEntityDescription(
+        key="weekly_avg_longest_stretch",
+        translation_key="weekly_avg_longest_stretch",
+        icon="mdi:trophy-outline",
+        value_fn=lambda a: a.weekly_avg_longest_stretch,
+    ),
+    CradlewiseAnalyticsEntityDescription(
+        key="baby_age_text",
+        translation_key="baby_age_text",
+        icon="mdi:baby-face-outline",
+        value_fn=lambda a: a.baby_age_text,
+    ),
     CradlewiseAnalyticsEntityDescription(
         key="last_nap_start",
         translation_key="last_nap_start",
