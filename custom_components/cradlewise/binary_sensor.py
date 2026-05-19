@@ -14,6 +14,10 @@ from homeassistant.components.binary_sensor import (
     BinarySensorEntityDescription,
 )
 from homeassistant.config_entries import ConfigEntry
+try:
+    from homeassistant.const import EntityCategory
+except ImportError:
+    from homeassistant.helpers.entity import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -33,6 +37,7 @@ BINARY_SENSOR_DESCRIPTIONS: tuple[CradlewiseBinarySensorEntityDescription, ...] 
         key="online",
         translation_key="online",
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
+        entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda c: c.online,
     ),
     CradlewiseBinarySensorEntityDescription(
@@ -85,37 +90,8 @@ BINARY_SENSOR_DESCRIPTIONS: tuple[CradlewiseBinarySensorEntityDescription, ...] 
         translation_key="loud_sound_detected",
         device_class=BinarySensorDeviceClass.SOUND,
         icon="mdi:volume-high",
+        entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda c: c.loud_sound_detected,
-    ),
-    CradlewiseBinarySensorEntityDescription(
-        key="inside_sleep_schedule",
-        translation_key="inside_sleep_schedule",
-        icon="mdi:calendar-clock",
-        value_fn=lambda c: c.inside_sleep_schedule,
-    ),
-    CradlewiseBinarySensorEntityDescription(
-        key="inside_soothing_window",
-        translation_key="inside_soothing_window",
-        icon="mdi:clock-check",
-        value_fn=lambda c: c.inside_soothing_window,
-    ),
-    CradlewiseBinarySensorEntityDescription(
-        key="rocking_not_effective",
-        translation_key="rocking_not_effective",
-        icon="mdi:alert-outline",
-        value_fn=lambda c: c.rocking_not_effective,
-    ),
-    CradlewiseBinarySensorEntityDescription(
-        key="charging",
-        translation_key="charging",
-        device_class=BinarySensorDeviceClass.BATTERY_CHARGING,
-        value_fn=lambda c: c.charging,
-    ),
-    CradlewiseBinarySensorEntityDescription(
-        key="power_supply_removed",
-        translation_key="power_supply_removed",
-        device_class=BinarySensorDeviceClass.PLUG,
-        value_fn=lambda c: not c.supply_removed if c.supply_removed is not None else None,
     ),
 )
 
@@ -151,6 +127,7 @@ class CradlewiseBinarySensor(
         self.entity_description = description
         self._cradle_id = cradle.cradle_id
         self._attr_unique_id = f"{cradle.cradle_id}_{description.key}"
+        self._attr_entity_category = description.entity_category
         self._attr_device_info = _device_info(cradle)
 
     @property
