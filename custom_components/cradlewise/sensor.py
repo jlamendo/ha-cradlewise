@@ -33,6 +33,7 @@ _LOGGER = logging.getLogger(__name__)
 @dataclass(frozen=True, kw_only=True)
 class CradlewiseSensorEntityDescription(SensorEntityDescription):
     value_fn: Callable[[CradlewiseCradle], Any]
+    icon_fn: Callable[[Any], str | None] | None = None
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -50,7 +51,6 @@ SENSOR_DESCRIPTIONS: tuple[CradlewiseSensorEntityDescription, ...] = (
     CradlewiseSensorEntityDescription(
         key="baby_status",
         translation_key="baby_status",
-        icon="mdi:baby-face",
         value_fn=lambda c: (
             "play"
             if not c.baby_present
@@ -61,6 +61,11 @@ SENSOR_DESCRIPTIONS: tuple[CradlewiseSensorEntityDescription, ...] = (
                 else "awake"
             )
         ),
+        icon_fn=lambda state: {
+            "sleep": "mdi:sleep",
+            "awake": "mdi:lightning-bolt-outline",
+            "play": "mdi:teddy-bear",
+        }.get(state, "mdi:baby-face"),
     ),
     CradlewiseSensorEntityDescription(
         key="sleep_phase",
@@ -373,6 +378,13 @@ class CradlewiseSensor(CoordinatorEntity[CradlewiseCoordinator], SensorEntity):
         if cradle is None:
             return None
         return self.entity_description.value_fn(cradle)
+
+    @property
+    def icon(self) -> str | None:
+        """Return the icon of the sensor."""
+        if self.entity_description.icon_fn:
+            return self.entity_description.icon_fn(self.native_value)
+        return super().icon
 
     @property
     def available(self) -> bool:
