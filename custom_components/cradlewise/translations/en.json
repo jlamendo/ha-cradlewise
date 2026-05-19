@@ -72,9 +72,7 @@
       "loud_sound_detected": { "name": "Loud sound detected" },
       "inside_sleep_schedule": { "name": "In sleep schedule" },
       "inside_soothing_window": { "name": "In soothing window" },
-      "rocking_not_effective": { "name": "Rocking not effective" },
-      "charging": { "name": "Charging" },
-      "power_supply_removed": { "name": "Power connected" }
+      "rocking_not_effective": { "name": "Rocking not effective" }
     }
   }
 }

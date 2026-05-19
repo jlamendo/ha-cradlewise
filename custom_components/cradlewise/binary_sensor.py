@@ -105,18 +105,6 @@ BINARY_SENSOR_DESCRIPTIONS: tuple[CradlewiseBinarySensorEntityDescription, ...] 
         icon="mdi:alert-outline",
         value_fn=lambda c: c.rocking_not_effective,
     ),
-    CradlewiseBinarySensorEntityDescription(
-        key="charging",
-        translation_key="charging",
-        device_class=BinarySensorDeviceClass.BATTERY_CHARGING,
-        value_fn=lambda c: c.charging,
-    ),
-    CradlewiseBinarySensorEntityDescription(
-        key="power_supply_removed",
-        translation_key="power_supply_removed",
-        device_class=BinarySensorDeviceClass.PLUG,
-        value_fn=lambda c: not c.supply_removed if c.supply_removed is not None else None,
-    ),
 )
 
 
