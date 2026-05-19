@@ -6,7 +6,7 @@ import logging
 from datetime import timedelta
 from typing import Any
 
-from .pycradlewise import (
+from pycradlewise import (
     AppConfig,
     CradlewiseApiError,
     CradlewiseClient,

@@ -6,7 +6,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-from .pycradlewise import CradlewiseCradle
+from pycradlewise import CradlewiseCradle
 
 from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,

@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from datetime import datetime, time, timedelta, timezone
 from typing import Any
 
-from .pycradlewise import CradlewiseCradle, SleepAnalytics
+from pycradlewise import CradlewiseCradle, SleepAnalytics
 
 from homeassistant.components.recorder import get_instance, history
 from homeassistant.components.sensor import (
