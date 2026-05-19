@@ -75,10 +75,7 @@
       "bouncing": { "name": "Bouncing" },
       "music_playing": { "name": "Music playing" },
       "light_on": { "name": "Night light" },
-      "loud_sound_detected": { "name": "Loud sound detected" },
-      "inside_sleep_schedule": { "name": "In sleep schedule" },
-      "inside_soothing_window": { "name": "In soothing window" },
-      "rocking_not_effective": { "name": "Rocking not effective" }
+      "loud_sound_detected": { "name": "Loud sound detected" }
     }
   }
 }
