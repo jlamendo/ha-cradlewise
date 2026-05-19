@@ -17,7 +17,10 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import UnitOfTime
+try:
+    from homeassistant.const import EntityCategory
+except ImportError:
+    from homeassistant.helpers.entity import EntityCategory
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -107,18 +110,21 @@ SENSOR_DESCRIPTIONS: tuple[CradlewiseSensorEntityDescription, ...] = (
         key="max_bounce_limit",
         translation_key="max_bounce_limit",
         icon="mdi:arrow-up-down-bold-outline",
+        entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda c: c.max_bounce_limit,
     ),
     CradlewiseSensorEntityDescription(
         key="responsivity_setting",
         translation_key="responsivity_setting",
         icon="mdi:speedometer",
+        entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda c: c.responsivity_level or c.responsivity_setting,
     ),
     CradlewiseSensorEntityDescription(
         key="cry_sensitivity",
         translation_key="cry_sensitivity",
         icon="mdi:baby-face-outline",
+        entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda c: c.cry_sensitivity_level or c.cry_sensitivity,
     ),
     CradlewiseSensorEntityDescription(
@@ -143,6 +149,7 @@ SENSOR_DESCRIPTIONS: tuple[CradlewiseSensorEntityDescription, ...] = (
         key="max_volume_limit",
         translation_key="max_volume_limit",
         icon="mdi:volume-source",
+        entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda c: c.max_volume_limit,
     ),
     CradlewiseSensorEntityDescription(
@@ -190,12 +197,14 @@ SENSOR_DESCRIPTIONS: tuple[CradlewiseSensorEntityDescription, ...] = (
         key="day_start_time",
         translation_key="day_start_time",
         icon="mdi:calendar-clock",
+        entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda c: c.day_start_time,
     ),
     CradlewiseSensorEntityDescription(
         key="firmware_version",
         translation_key="firmware_version",
         icon="mdi:chip",
+        entity_category=EntityCategory.DIAGNOSTIC,
         entity_registry_enabled_default=False,
         value_fn=lambda c: c.firmware_version,
     ),
@@ -370,6 +379,7 @@ class CradlewiseSensor(CoordinatorEntity[CradlewiseCoordinator], SensorEntity):
         self.entity_description = description
         self._cradle_id = cradle.cradle_id
         self._attr_unique_id = f"{cradle.cradle_id}_{description.key}"
+        self._attr_entity_category = description.entity_category
         self._attr_device_info = _device_info(cradle)
 
     @property
@@ -406,6 +416,7 @@ class CradlewiseAnalyticsSensor(CoordinatorEntity[CradlewiseCoordinator], Sensor
         self._cradle_id = cradle.cradle_id
         self._baby_id = cradle.baby_id
         self._attr_unique_id = f"{cradle.cradle_id}_{description.key}"
+        self._attr_entity_category = description.entity_category
         self._attr_device_info = _device_info(cradle)
 
     @property
