@@ -21,6 +21,7 @@
   "entity": {
     "sensor": {
       "sleep_state": { "name": "Sleep state" },
+      "baby_status": { "name": "Baby status" },
       "sleep_phase": { "name": "Sleep phase" },
       "cradle_mode": { "name": "Cradle mode" },
       "bounce_mode": { "name": "Bounce mode" },
